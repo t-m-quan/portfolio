@@ -1,0 +1,50 @@
+version: '3'
+services:
+    nodejs_server:
+      build:
+        context: ./server
+      container_name: nodejsserver
+      hostname: nodejsserver
+      ports:
+        - "3000:3000"
+      networks:
+        - mde
+      depends_on:
+        - mongo
+    
+    reactjs_frontend:
+      build:
+        context: ./frontend
+      container_name: reactjsfrontend
+      hostname: reactjsfrontend
+      ports:
+        - "5000:3000"
+      networks:
+        - mde
+      depends_on:
+        - nodejs_server
+
+    mongo:
+      image: mongo
+      container_name: mongo
+      volumes:
+        - ./mongo:/data/db
+      ports:
+        - "27017:27017"
+      networks:
+        - mde
+    
+    nginx:
+      build:
+        context: ./nginx
+      container_name: nginx
+      hostname: nginx
+      ports:
+        - "80:80"
+      networks:
+        - mde
+      depends_on:
+        - nodejs_server
+networks:
+  mde:
+    external: true
