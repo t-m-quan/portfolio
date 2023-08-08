@@ -1,4 +1,8 @@
 FROM node:latest
+
+ENV MONGO_DB_USERNAME=admin \
+    MONGO_DB_PWD=password
+
 WORKDIR /usr/src/app
 
 COPY ./package.json ./
